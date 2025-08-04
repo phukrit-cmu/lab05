@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Friend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            width: 400px;
+        }
+        .input-container {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .input-container input {
+            flex-grow: 1;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+        .input-container button {
+            padding: 8px 12px;
+            margin-left: 8px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        .friends-list {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 40px;
+        }
+        .friend-tag {
+            display: flex;
+            align-items: center;
+            background-color: #e9e9e9;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+        }
+        .remove-btn {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="input-container">
+            <input type="text" id="friendInput" placeholder="Enter Friend name">
+            <button id="addBtn">ADD</button>
+        </div>
+
+        <div id="friendsList" class="friends-list">
+            <div class="friend-tag">
+                <span>ปิยธิดา ปักษานาม</span>
+                <span class="remove-btn">×</span>
+            </div>
+            <div class="friend-tag">
+                <span>Jaturond Hongcheewin</span>
+                <span class="remove-btn">×</span>
+            </div>
+        </div>
+    </div>
+
+    <footer><a href="./index.html">Back to Calculator</a></footer>
+
+    <script src="AddFriend.js"></script>
+
+</body>
+</html>
