@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai Programming Lab</title>
+    <style>
+        body {
+            font-family: 'Sarabun', Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .lab-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .time-display {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        .input-group input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 60px;
+            text-align: center;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .btn-validate {
+            background-color: #2196F3;
+        }
+        .btn-validate:hover {
+            background-color: #1976D2;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .result.valid {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result.invalid {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thai Programming Lab - Date Validation & Time Display</h1>
+        
+        <!-- Lab 1.4 - Time Display -->
+        <div class="lab-section">
+            <h2>Lab1.4 - การแสดงเวลาปัจจุบัน</h2>
+            <p>1. สร้างไฟล์ time1.html และ time1.js และ import tag script ให้ไฟล์ time1.html</p>
+            <p>2. สร้างนาฬิกาโดยมีลวดลายเปลี่ยนไปเรื่อย ๆ ทุก 1 วินาที</p>
+            
+            <div class="time-display" id="timeDisplay">16:30:02</div>
+            <div class="time-display" id="timeDisplay2" style="font-size: 36px; color: #e74c3c;">16:30:03</div>
+        </div>
+
+        <!-- Lab 1.5 - Date Validation -->
+        <div class="lab-section">
+            <h2>Lab1.5 - การตรวจสอบความถูกต้องของวันที่</h2>
+            <p>1. สร้างไฟล์ buddate.html และ buddate.js และ import tag script ให้ไฟล์ buddate.html</p>
+            <p>2. สร้างช่องกรอกข้อมูล วัน-เดือน-<span style="background-color: yellow;">ปี ค.ศ.</span> ด้วยภาษา เมื่อบ่งบอกโป้ให้ alert ว่าถึกต้องกรอกข้อมูล</p>
+            <p style="color: red;">หรือไม่ ถ่ากรอกอนาถูกต้อง 29-02-2567 ต้องแจ้งว่าน ผญหิ</p>
+
+            <div class="input-group">
+                <label>วันที่:</label>
+                <input type="number" id="day1" placeholder="วัน" min="1" max="31" value="29">
+                <input type="number" id="month1" placeholder="เดือน" min="1" max="12" value="12">
+                <input type="number" id="year1" placeholder="ปี" min="1900" max="2100" value="2567">
+                <button class="btn btn-validate" onclick="validateDate1()">validate</button>
+            </div>
+            <div id="result1" class="result" style="display: none;"></div>
+
+            <hr style="margin: 20px 0;">
+
+            <p>ถ้ากรอกอนาไม่ถูกต้อง 29-02-2566 ต้อง alert false</p>
+            
+            <div class="input-group">
+                <label>วันที่:</label>
+                <input type="number" id="day2" placeholder="วัน" min="1" max="31" value="29">
+                <input type="number" id="month2" placeholder="เดือน" min="1" max="12" value="02">
+                <input type="number" id="year2" placeholder="ปี" min="1900" max="2100" value="2566">
+                <button class="btn btn-validate" onclick="validateDate2()">validate</button>
+            </div>
+            <div id="result2" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Additional Date Validation Examples -->
+        <div class="lab-section">
+            <h2>ตัวอย่างเพิ่มเติม - Date Validation</h2>
+            <div class="input-group">
+                <label>ทดสอบวันที่อื่นๆ:</label>
+                <input type="number" id="day3" placeholder="วัน" min="1" max="31" value="32">
+                <input type="number" id="month3" placeholder="เดือน" min="1" max="12" value="02">
+                <input type="number" id="year3" placeholder="ปี" min="1900" max="2100" value="2566">
+                <button class="btn btn-validate" onclick="validateDate3()">validate</button>
+            </div>
+            <div id="result3" class="result" style="display: none;"></div>
+        </div>
+    </div>
+<footer><a href="./index.html">Back to Calculator</a></footer>
+    <script>
+        // Lab 1.4 - Time Display Functions
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            // Update first display
+            document.getElementById('timeDisplay').textContent = timeString;
+            
+            // Update second display with different style
+            document.getElementById('timeDisplay2').textContent = timeString;
+            
+            // Change colors randomly for visual effect
+            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.getElementById('timeDisplay2').style.color = randomColor;
+        }
+
+        // Lab 1.5 - Date Validation Functions
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+
+        function getDaysInMonth(month, year) {
+            const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            if (month === 2 && isLeapYear(year)) {
+                return 29;
+            }
+            return daysInMonth[month - 1];
+        }
+
+        function validateDateLogic(day, month, year) {
+            // Check if inputs are valid numbers
+            if (isNaN(day) || isNaN(month) || isNaN(year)) {
+                return { valid: false, message: "กรุณากรอกข้อมูลให้ครบถ้วน" };
+            }
+
+            // Check month range
+            if (month < 1 || month > 12) {
+                return { valid: false, message: "เดือนต้องอยู่ระหว่าง 1-12" };
+            }
+
+            // Check day range
+            if (day < 1 || day > 31) {
+                return { valid: false, message: "วันต้องอยู่ระหว่าง 1-31" };
+            }
+
+            // Check if day is valid for the specific month
+            const maxDaysInMonth = getDaysInMonth(month, year);
+            if (day > maxDaysInMonth) {
+                if (month === 2 && day === 29) {
+                    return { valid: false, message: `ปี ${year} ไม่ใช่ปีอธิกสุรทิน เดือนกุมภาพันธ์มีเพียง 28 วัน` };
+                }
+                return { valid: false, message: `เดือน ${month} มีเพียง ${maxDaysInMonth} วัน` };
+            }
+
+            return { valid: true, message: "วันที่ถูกต้อง" };
+        }
+
+        function showResult(resultId, isValid, message) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.style.display = 'block';
+            resultDiv.className = `result ${isValid ? 'valid' : 'invalid'}`;
+            resultDiv.textContent = message;
+        }
+
+        function validateDate1() {
+            const day = parseInt(document.getElementById('day1').value);
+            const month = parseInt(document.getElementById('month1').value);
+            const year = parseInt(document.getElementById('year1').value);
+            
+            const result = validateDateLogic(day, month, year);
+            
+            if (!result.valid) {
+                alert(result.message);
+            }
+            
+            showResult('result1', result.valid, result.message);
+        }
+
+        function validateDate2() {
+            const day = parseInt(document.getElementById('day2').value);
+            const month = parseInt(document.getElementById('month2').value);
+            const year = parseInt(document.getElementById('year2').value);
+            
+            const result = validateDateLogic(day, month, year);
+            
+            if (!result.valid) {
+                alert('false');
+            }
+            
+            showResult('result2', result.valid, result.message);
+        }
+
+        function validateDate3() {
+            const day = parseInt(document.getElementById('day3').value);
+            const month = parseInt(document.getElementById('month3').value);
+            const year = parseInt(document.getElementById('year3').value);
+            
+            const result = validateDateLogic(day, month, year);
+            
+            if (!result.valid) {
+                alert('false');
+            }
+            
+            showResult('result3', result.valid, result.message);
+        }
+
+        // Start the time display updates
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call to display time immediately
+    </script>
+</body>
+</html>
