@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        main {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .calculator {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #display {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: right;
+            font-size: 24px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            min-height: 36px;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+        }
+        #buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            grid-auto-rows: minmax(50px, auto);
+        }
+        
+        /* Make undo/redo buttons span 2 columns */
+        button.operator-state:nth-last-child(2) {
+            grid-column: 1 / span 2;
+        }
+        
+        button.operator-state:last-child {
+            grid-column: 3 / span 2;
+        }
+        button {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button.number {
+            background-color: #f8f9fa;
+        }
+        button.operator-cal {
+            background-color: #ff9f1c;
+            color: white;
+        }
+        button.operator-state {
+            background-color: #e9ecef;
+        }
+        button.operator-decimal {
+            background-color: #f8f9fa;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        button.operator-cal:active {
+            background-color: #e08a1a;
+        }
+        button.operator-state:active {
+            background-color: #d1d5db;
+        }
+        button.number:active, button.operator-decimal:active {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    
+    <main>
+        <h1>Lab 5 Calculator</h1>
+        <section class="calculator">
+            <div id="display"></div>
+            <div id="buttons">
+                <!-- Number pad -->
+                <button class="number">7</button>
+                <button class="number">8</button>
+                <button class="number">9</button>
+                <button class="operator-cal">/</button>
+                
+                <button class="number">4</button>
+                <button class="number">5</button>
+                <button class="number">6</button>
+                <button class="operator-cal">*</button>
+                
+                <button class="number">1</button>
+                <button class="number">2</button>
+                <button class="number">3</button>
+                <button class="operator-cal">-</button>
+                
+                <button class="number">0</button>
+                <button class="operator-decimal">.</button>
+                <button class="operator-state">&larr;</button>
+                <button class="operator-cal">+</button>
+                
+                <!-- Function buttons -->
+                <button class="operator-state">(</button>
+                <button class="operator-state">)</button>
+                <button class="operator-state">C</button>
+                <button class="operator-state">CE</button>
+                
+                <button class="operator-state">undo</button>
+                <button class="operator-state">redo</button>
+                <button class="operator-cal" style="grid-column: span 2;">=</button>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // Get references to HTML elements
+        const display = document.getElementById('display');
+        const buttons = document.getElementById('buttons');
+        const numbers = document.getElementsByClassName('number');
+        const operators = document.getElementsByClassName('operator-cal');
+        const decimal = document.getElementsByClassName('operator-decimal');
+        const state = document.getElementsByClassName('operator-state');
+
+        // Calculator state variables
+        let expression = '';       // Current expression being built
+        let result = '';           // Stores the result of calculations
+        let history = [''];        // Array to store history of expressions for undo/redo
+        let historyIndex = 0;      // Current position in history array
+
+        // Update the calculator display with the current expression
+        const updateDisplay = () => {
+            display.textContent = expression || '0';  // Show '0' if expression is empty
+        }
+
+        // Save current expression to history for undo/redo functionality
+        const saveHistory = () => {
+            // If we're not at the end of history, remove future history when making new changes
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+            history.push(expression);  // Add current expression to history
+            historyIndex++;           // Move history index to the new position
+        }
+
+        // Add click event listeners to all number buttons (0-9)
+        Array.from(numbers).forEach(btn => {
+            btn.addEventListener('click', () => {
+                expression += btn.textContent;  // Append the clicked number to current expression
+                saveHistory();                  // Save current state to history
+                updateDisplay();                // Update the display
+            });
+        });
+
+        // Add click event listeners to operator buttons (+, -, *, /, =)
+        Array.from(operators).forEach(btn => {
+            btn.addEventListener('click', () => {
+                const op = btn.textContent;  // Get the operator that was clicked
+                
+                if (op === '=') {
+                    // Handle equals button: evaluate the expression
+                    try {
+                        result = eval(expression);       // Evaluate the mathematical expression
+                        expression = result.toString();  // Convert result to string for display
+                    } catch (e) {
+                        expression = 'Error';            // Show error if evaluation fails
+                    }
+                } else {
+                    // For other operators, append to current expression
+                    expression += op;
+                }
+                
+                saveHistory();    // Save current state to history
+                updateDisplay();  // Update the display
+            });
+        });
+
+        // Add click event listener for decimal point button
+        Array.from(decimal).forEach(btn => {
+            btn.addEventListener('click', () => {
+                expression += btn.textContent;  // Add decimal point to current number
+                saveHistory();                  // Save current state to history
+                updateDisplay();                // Update the display
+            });
+        });
+
+        // Add click event listeners for all state buttons (C, CE, ←, undo, redo, (, ))
+        Array.from(state).forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.textContent;  // Get the button's text content
+                
+                // Handle different button types using switch statement
+                switch(value) {
+                    case 'C':  // Clear all
+                        expression = '';  // Reset the expression
+                        break;
+                    case 'CE': // Clear entry (same as C in this implementation)
+                        expression = '';  // Reset the expression
+                        break;
+                    case '←':  // Backspace
+                        // Remove the last character from expression
+                        expression = expression.slice(0, -1);
+                        break;
+                    case 'undo':  // Undo last action
+                        if (historyIndex > 0) {
+                            historyIndex--;  // Move back in history
+                            expression = history[historyIndex];  // Restore previous expression
+                        }
+                        break;
+                    case 'redo':  // Redo last undone action
+                        if (historyIndex < history.length - 1) {
+                            historyIndex++;  // Move forward in history
+                            expression = history[historyIndex];  // Restore next expression
+                        }
+                        break;
+                    case '(':  // Opening parenthesis
+                    case ')':  // Closing parenthesis
+                        expression += value;  // Add the parenthesis to expression
+                        break;
+                }
+                
+                // Save to history if not undo/redo to prevent infinite history
+                if (value !== 'undo' && value !== 'redo') {
+                    saveHistory();
+                }
+                
+                updateDisplay();  // Always update the display after any state change
+            });
+        });
+    </script>
+</body>
+</html>
